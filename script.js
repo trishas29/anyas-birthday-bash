@@ -1,72 +1,77 @@
-const quoteButton = document.getElementById("quoteButton");
-const quoteText = document.getElementById("quoteText");
-const chaosButton = document.getElementById("chaosButton");
-const heroConfetti = document.getElementById("heroConfetti");
 const confettiLayer = document.getElementById("confettiLayer");
-const musicToggle = document.getElementById("musicToggle");
 const revealItems = document.querySelectorAll(".reveal");
-const interactiveItems = document.querySelectorAll(".interactive, .photo-card, .award-card");
-const quizProgress = document.getElementById("quizProgress");
-const quizQuestion = document.getElementById("quizQuestion");
-const quizOptions = document.getElementById("quizOptions");
-const cakeReveal = document.getElementById("cakeReveal");
-const cakeButton = document.getElementById("cakeButton");
+const startButton = document.getElementById("startButton");
+const musicToggle = document.getElementById("musicToggle");
+const secret67 = document.getElementById("secret67");
+const vibeText = document.getElementById("vibeText");
+const winCount = document.getElementById("winCount");
+const candleBoard = document.getElementById("candlesBoard");
+const candleStatus = document.getElementById("candleStatus");
+const candleTimer = document.getElementById("candleTimer");
+const candleReset = document.getElementById("candleReset");
+const giftBoard = document.getElementById("giftBoard");
+const giftReset = document.getElementById("giftReset");
+const giftStatus = document.getElementById("giftStatus");
+const cakeTop = document.getElementById("cakeTop");
+const cakeMiddle = document.getElementById("cakeMiddle");
+const cakeBottom = document.getElementById("cakeBottom");
+const cakeStatus = document.getElementById("cakeStatus");
+const awardPills = document.querySelectorAll(".award-pill");
+const awardStatus = document.getElementById("awardStatus");
+const finaleButton = document.getElementById("finaleButton");
+const finaleText = document.getElementById("finaleText");
 
-const quotes = [
-  '"Anya is proof that being iconic and slightly unhinged can coexist beautifully."',
-  '"If fabulous was taxable, Anya would owe the government everything."',
-  '"Anya does not chase the vibe. The vibe updates its resume and applies to her."',
-  '"Some people age gracefully. Anya ages like a sequel with a bigger budget."',
-  '"Every party needs snacks, music, and one Anya for quality control."',
-  '"Scientists still cannot explain how one person can be this glam and this chaotic."'
-];
-
-const quizQuestions = [
-  {
-    prompt: "When Anya arrives to the function, what changes first?",
-    answers: [
-      "The lighting gets better",
-      "The group chat gets louder",
-      "The room files a glamour report"
-    ]
-  },
-  {
-    prompt: "What is Anya's strongest birthday superpower?",
-    answers: [
-      "Making chaos look premium",
-      "Turning side-eyes into art",
-      "Causing compliments to form naturally"
-    ]
-  },
-  {
-    prompt: "What should you do when Anya says, 'be calm'?",
-    answers: [
-      "Absolutely do not believe that",
-      "Prepare for glitter-related events",
-      "Accept your fate and bring cake"
-    ]
+const confettiColors = ["#ff4fa3", "#ffd96d", "#ffffff", "#9cf7d5", "#ff9bc9"];
+const soundPool = {
+  random: [
+    { name: "bruh", url: "https://www.myinstants.com/media/sounds/movie_1.mp3" },
+    { name: "vine boom", url: "https://www.myinstants.com/media/sounds/vine-boom.mp3" },
+    { name: "fahh", url: "https://www.myinstants.com/media/sounds/fahh-but-louder.mp3" },
+    { name: "67", url: "https://www.myinstants.com/media/sounds/67_SQlv2Xv.mp3" }
+  ],
+  exact: {
+    "67": "https://www.myinstants.com/media/sounds/67_SQlv2Xv.mp3",
+    bruh: "https://www.myinstants.com/media/sounds/movie_1.mp3",
+    vine: "https://www.myinstants.com/media/sounds/vine-boom.mp3",
+    fahh: "https://www.myinstants.com/media/sounds/fahh-but-louder.mp3"
   }
+};
+
+const birthdayMelody = [
+  [392, 0.2], [392, 0.2], [440, 0.42], [392, 0.42], [523, 0.42], [494, 0.72],
+  [392, 0.2], [392, 0.2], [440, 0.42], [392, 0.42], [587, 0.42], [523, 0.72]
 ];
 
-const confettiColors = ["#ff4fb3", "#ffd76b", "#ffffff", "#ff8fd1", "#ff9f1c"];
-const memeSoundUrls = [
-  "https://www.myinstants.com/media/sounds/bruh.mp3",
-  "https://www.myinstants.com/media/sounds/vine-boom-sound-effect_KT89XIq.mp3",
-  "https://www.myinstants.com/media/sounds/67_1.mp3",
-  "https://www.myinstants.com/media/sounds/fahh-but-louder.mp3"
-];
+const cakeThemes = {
+  top: [
+    "linear-gradient(135deg, #ffe2f0, #fff4bf)",
+    "linear-gradient(135deg, #fff4a8, #ffd36a)",
+    "linear-gradient(135deg, #d4ffe8, #7de7c2)"
+  ],
+  middle: [
+    "linear-gradient(135deg, #ff6ab2, #ff9fcb)",
+    "linear-gradient(135deg, #f78b3d, #ffd36f)",
+    "linear-gradient(135deg, #7be7c4, #b0fff0)"
+  ],
+  bottom: [
+    "linear-gradient(135deg, #ffd96d, #ffbd4a)",
+    "linear-gradient(135deg, #ffc0de, #ff82ba)",
+    "linear-gradient(135deg, #daf7ea, #97efcf)"
+  ]
+};
 
 let audioContext;
 let musicInterval;
 let musicEnabled = false;
-let quizIndex = 0;
-let activeMemeAudio;
-
-const memeAudios = memeSoundUrls.map((url) => new Audio(url));
-memeAudios.forEach((audio) => {
-  audio.preload = "auto";
-  audio.volume = 0.5;
-});
+let activeAudio;
+let lastRandomSound = -1;
+let candleTimerId;
+let candleTimeLeft = 12;
+let candlesLit = 0;
+let giftWinner = 0;
+let giftLocked = false;
+const clearedGames = new Set();
+const cakeState = { top: 0, middle: 0, bottom: 0 };
 
 function ensureAudio() {
   if (!audioContext) {
@@ -78,85 +83,246 @@ function ensureAudio() {
   }
 }
 
-function playTone(frequency, duration, type = "sine", volume = 0.18, when = 0) {
+function playTone(frequency, duration, type = "triangle", volume = 0.08, when = 0) {
   ensureAudio();
 
   const startAt = audioContext.currentTime + when;
   const oscillator = audioContext.createOscillator();
-  const gainNode = audioContext.createGain();
+  const gain = audioContext.createGain();
 
   oscillator.type = type;
   oscillator.frequency.setValueAtTime(frequency, startAt);
+  gain.gain.setValueAtTime(0.0001, startAt);
+  gain.gain.exponentialRampToValueAtTime(volume, startAt + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
 
-  gainNode.gain.setValueAtTime(0.0001, startAt);
-  gainNode.gain.exponentialRampToValueAtTime(volume, startAt + 0.01);
-  gainNode.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
-
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
-
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
   oscillator.start(startAt);
-  oscillator.stop(startAt + duration + 0.02);
+  oscillator.stop(startAt + duration + 0.03);
 }
 
-function playRandomMemeSound() {
-  const selected = memeAudios[Math.floor(Math.random() * memeAudios.length)];
+function playBirthdayLoop() {
+  let offset = 0;
+  birthdayMelody.forEach(([frequency, duration]) => {
+    playTone(frequency, duration, "triangle", 0.06, offset);
+    offset += duration;
+  });
+}
 
+function playAudioUrl(url) {
   try {
-    if (activeMemeAudio && activeMemeAudio !== selected) {
-      activeMemeAudio.pause();
-      activeMemeAudio.currentTime = 0;
+    if (activeAudio) {
+      activeAudio.pause();
+      activeAudio.currentTime = 0;
     }
 
-    selected.currentTime = 0;
-    selected.play().catch(() => {
-      playTone(660, 0.12, "square", 0.08);
+    const audio = new Audio(url);
+    audio.preload = "auto";
+    audio.volume = 0.45;
+    audio.play().catch(() => {
+      playTone(660, 0.08, "square", 0.05);
     });
-    activeMemeAudio = selected;
+    activeAudio = audio;
   } catch {
-    playTone(660, 0.12, "square", 0.08);
+    playTone(660, 0.08, "square", 0.05);
   }
 }
 
-function burstConfetti(intensity = 40) {
-  for (let i = 0; i < intensity; i += 1) {
+function playRandomSound() {
+  let nextIndex = Math.floor(Math.random() * soundPool.random.length);
+  if (soundPool.random.length > 1 && nextIndex === lastRandomSound) {
+    nextIndex = (nextIndex + 1) % soundPool.random.length;
+  }
+  lastRandomSound = nextIndex;
+  playAudioUrl(soundPool.random[nextIndex].url);
+}
+
+function playExactSound(name) {
+  const url = soundPool.exact[name];
+  if (url) {
+    playAudioUrl(url);
+  } else {
+    playRandomSound();
+  }
+}
+
+function addRandomSoundOnClick(selector) {
+  document.querySelectorAll(selector).forEach((item) => {
+    item.addEventListener("click", () => {
+      playRandomSound();
+    });
+  });
+}
+
+function burstConfetti(amount = 40) {
+  for (let index = 0; index < amount; index += 1) {
     const piece = document.createElement("span");
     piece.className = "confetti";
     piece.style.left = `${Math.random() * 100}%`;
     piece.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-    piece.style.animationDuration = `${3 + Math.random() * 2.5}s`;
-    piece.style.animationDelay = `${Math.random() * 0.2}s`;
-    piece.style.setProperty("--drift", `${(Math.random() - 0.5) * 220}px`);
-    piece.style.transform = `scale(${0.7 + Math.random() * 0.8}) rotate(${Math.random() * 360}deg)`;
+    piece.style.animationDuration = `${2.8 + Math.random() * 2.2}s`;
+    piece.style.setProperty("--drift", `${(Math.random() - 0.5) * 240}px`);
+    piece.style.transform = `scale(${0.8 + Math.random() * 0.8}) rotate(${Math.random() * 360}deg)`;
     confettiLayer.appendChild(piece);
-
-    window.setTimeout(() => piece.remove(), 6000);
+    window.setTimeout(() => piece.remove(), 5500);
   }
 }
 
-function generateQuote() {
-  const next = quotes[Math.floor(Math.random() * quotes.length)];
-  quoteText.textContent = next;
-  quoteText.animate(
-    [
-      { transform: "scale(0.96)", opacity: 0.5 },
-      { transform: "scale(1)", opacity: 1 }
-    ],
-    { duration: 260, easing: "ease-out" }
-  );
+function setVibe(text) {
+  vibeText.textContent = text;
 }
 
-function playBirthdayLoop() {
-  const melody = [
-    [392, 0.22], [392, 0.22], [440, 0.45], [392, 0.45], [523, 0.45], [494, 0.8],
-    [392, 0.22], [392, 0.22], [440, 0.45], [392, 0.45], [587, 0.45], [523, 0.8]
-  ];
+function updateWins() {
+  winCount.textContent = `${clearedGames.size} / 3`;
 
-  let offset = 0;
-  melody.forEach(([frequency, duration]) => {
-    playTone(frequency, duration, "triangle", 0.07, offset);
-    offset += duration;
-  });
+  if (clearedGames.size === 0) {
+    setVibe("warming up");
+  } else if (clearedGames.size === 1) {
+    setVibe("officially moving");
+  } else if (clearedGames.size === 2) {
+    setVibe("alarmingly good");
+  } else {
+    setVibe("full birthday engine");
+    finaleButton.disabled = false;
+    finaleText.textContent = "All games cleared. The giant cake drop is now available.";
+  }
+}
+
+function markGameCleared(id) {
+  if (!clearedGames.has(id)) {
+    clearedGames.add(id);
+    updateWins();
+  }
+}
+
+function createCandles() {
+  candleBoard.innerHTML = "";
+  candlesLit = 0;
+  candleTimeLeft = 12;
+  candleStatus.textContent = "8 candles waiting";
+  candleTimer.textContent = "12.0s";
+
+  for (let index = 0; index < 8; index += 1) {
+    const candle = document.createElement("button");
+    candle.type = "button";
+    candle.className = "candle interactive";
+    candle.setAttribute("aria-label", `Light candle ${index + 1}`);
+
+    candle.addEventListener("click", () => {
+      if (candle.classList.contains("lit")) {
+        return;
+      }
+
+      candle.classList.add("lit");
+      candlesLit += 1;
+      playRandomSound();
+      burstConfetti(10);
+      candleStatus.textContent = `${8 - candlesLit} candles waiting`;
+
+      if (candlesLit === 8) {
+        window.clearInterval(candleTimerId);
+        candleStatus.textContent = "Every candle is on. Excellent work.";
+        markGameCleared("candles");
+        burstConfetti(70);
+        playExactSound("vine");
+      }
+    });
+
+    candleBoard.appendChild(candle);
+  }
+
+  window.clearInterval(candleTimerId);
+  candleTimerId = window.setInterval(() => {
+    candleTimeLeft -= 0.1;
+    candleTimer.textContent = `${Math.max(candleTimeLeft, 0).toFixed(1)}s`;
+
+    if (candleTimeLeft <= 0) {
+      window.clearInterval(candleTimerId);
+      candleStatus.textContent = "Timer expired. The candles are judging you.";
+      Array.from(candleBoard.children).forEach((candle) => {
+        candle.disabled = true;
+      });
+      playExactSound("bruh");
+    }
+  }, 100);
+}
+
+function buildGiftBoard() {
+  giftBoard.innerHTML = "";
+  giftWinner = Math.floor(Math.random() * 9);
+  giftLocked = false;
+  giftStatus.textContent = "Diode has not been located yet.";
+
+  for (let index = 0; index < 9; index += 1) {
+    const gift = document.createElement("button");
+    gift.type = "button";
+    gift.className = "gift interactive";
+    gift.textContent = "🎁";
+    gift.setAttribute("aria-label", `Open gift ${index + 1}`);
+
+    gift.addEventListener("click", () => {
+      if (giftLocked || gift.classList.contains("open")) {
+        return;
+      }
+
+      gift.classList.add("open");
+
+      if (index === giftWinner) {
+        gift.textContent = "🐶";
+        giftLocked = true;
+        giftStatus.textContent = "Diode found. Strong investigative instincts.";
+        markGameCleared("gift");
+        burstConfetti(80);
+        playExactSound("67");
+      } else {
+        gift.textContent = "🧦";
+        giftStatus.textContent = "Not Diode. Just an emotionally confusing gift.";
+        playRandomSound();
+      }
+    });
+
+    giftBoard.appendChild(gift);
+  }
+}
+
+function paintCake() {
+  cakeTop.style.background = cakeThemes.top[cakeState.top];
+  cakeMiddle.style.background = cakeThemes.middle[cakeState.middle];
+  cakeBottom.style.background = cakeThemes.bottom[cakeState.bottom];
+
+  const complete = cakeState.top > 0 && cakeState.middle > 0 && cakeState.bottom > 0;
+  cakeStatus.textContent = complete
+    ? "Cake locked in. Suspiciously elegant."
+    : "Cake is currently under fashionable construction.";
+
+  if (complete) {
+    markGameCleared("cake");
+  }
+}
+
+function cycleCakePart(part) {
+  const optionsCount = cakeThemes[part].length;
+  cakeState[part] = (cakeState[part] + 1) % optionsCount;
+  paintCake();
+  burstConfetti(14);
+  playRandomSound();
+}
+
+function finaleDrop() {
+  if (finaleButton.disabled) {
+    return;
+  }
+
+  document.body.classList.add("party-surge");
+  finaleText.textContent = "Cake dropped. Party sustained. Anya wins again.";
+  burstConfetti(180);
+  playExactSound("fahh");
+  window.setTimeout(() => playExactSound("67"), 260);
+
+  window.setTimeout(() => {
+    document.body.classList.remove("party-surge");
+  }, 1400);
 }
 
 function toggleMusic() {
@@ -165,85 +331,10 @@ function toggleMusic() {
 
   if (musicEnabled) {
     playBirthdayLoop();
-    musicInterval = window.setInterval(playBirthdayLoop, 6500);
-    burstConfetti(25);
+    musicInterval = window.setInterval(playBirthdayLoop, 6200);
   } else {
     window.clearInterval(musicInterval);
   }
-}
-
-function renderQuizQuestion() {
-  const current = quizQuestions[quizIndex];
-
-  quizProgress.textContent = `Question ${quizIndex + 1} of ${quizQuestions.length}`;
-  quizQuestion.textContent = current.prompt;
-  quizOptions.innerHTML = "";
-
-  current.answers.forEach((answer, index) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "quiz-option interactive";
-    button.textContent = answer;
-
-    button.addEventListener("click", () => {
-      playRandomMemeSound();
-      burstConfetti(20 + index * 5);
-      button.classList.add("correct");
-
-      window.setTimeout(() => {
-        quizIndex += 1;
-        if (quizIndex < quizQuestions.length) {
-          renderQuizQuestion();
-        } else {
-          quizProgress.textContent = "Exam complete";
-          quizQuestion.textContent = "The council has reviewed your answers and found them delightfully unserious.";
-          quizOptions.innerHTML = "";
-          cakeReveal.classList.remove("hidden");
-          burstConfetti(100);
-        }
-      }, 550);
-    });
-
-    quizOptions.appendChild(button);
-  });
-}
-
-function activateChaosMode() {
-  document.body.classList.add("chaos-mode");
-  burstConfetti(120);
-
-  for (let i = 0; i < 5; i += 1) {
-    window.setTimeout(playRandomMemeSound, i * 180);
-  }
-
-  const colors = [
-    "linear-gradient(135deg, #16001f, #32053f)",
-    "linear-gradient(135deg, #390019, #6a00f4)",
-    "linear-gradient(135deg, #4d002a, #b8860b)"
-  ];
-
-  let cycle = 0;
-  const flash = window.setInterval(() => {
-    document.body.style.background = colors[cycle % colors.length];
-    cycle += 1;
-    if (cycle > 7) {
-      window.clearInterval(flash);
-      document.body.style.background =
-        "radial-gradient(circle at top, rgba(255, 215, 107, 0.18), transparent 28%), radial-gradient(circle at 20% 20%, rgba(255, 79, 179, 0.2), transparent 24%), linear-gradient(135deg, #16001f, #32053f)";
-    }
-  }, 220);
-
-  window.setTimeout(() => {
-    document.body.classList.remove("chaos-mode");
-  }, 1700);
-}
-
-function attachAmbientClicks() {
-  interactiveItems.forEach((item) => {
-    item.addEventListener("click", () => {
-      playRandomMemeSound();
-    });
-  });
 }
 
 const observer = new IntersectionObserver(
@@ -254,29 +345,47 @@ const observer = new IntersectionObserver(
       }
     });
   },
-  { threshold: 0.18 }
+  { threshold: 0.14 }
 );
 
 revealItems.forEach((item) => observer.observe(item));
 
-quoteButton.addEventListener("click", () => {
-  generateQuote();
+document.querySelectorAll("[data-cake-part]").forEach((button) => {
+  button.addEventListener("click", () => {
+    cycleCakePart(button.dataset.cakePart);
+  });
 });
 
-heroConfetti.addEventListener("click", () => burstConfetti(80));
-chaosButton.addEventListener("click", activateChaosMode);
-musicToggle.addEventListener("click", toggleMusic);
-
-if (cakeButton) {
-  cakeButton.addEventListener("click", () => {
-    burstConfetti(90);
-    playRandomMemeSound();
+awardPills.forEach((pill) => {
+  pill.addEventListener("click", () => {
+    awardPills.forEach((item) => item.classList.remove("active"));
+    pill.classList.add("active");
+    awardStatus.textContent = `${pill.dataset.award}. Approved unanimously by the committee.`;
+    playRandomSound();
   });
-}
+});
 
-attachAmbientClicks();
-renderQuizQuestion();
+startButton.addEventListener("click", () => {
+  burstConfetti(110);
+  playExactSound("67");
+  setVibe("broadcasting");
+  document.getElementById("games")?.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+musicToggle.addEventListener("click", toggleMusic);
+secret67.addEventListener("click", () => playExactSound("67"));
+candleReset.addEventListener("click", createCandles);
+giftReset.addEventListener("click", buildGiftBoard);
+finaleButton.addEventListener("click", finaleDrop);
+
+addRandomSoundOnClick(".photo-tile");
+addRandomSoundOnClick(".diode-card");
+
+createCandles();
+buildGiftBoard();
+paintCake();
+updateWins();
 
 window.addEventListener("load", () => {
-  setTimeout(() => burstConfetti(60), 300);
+  window.setTimeout(() => burstConfetti(70), 260);
 });

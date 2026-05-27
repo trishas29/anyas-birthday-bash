@@ -7,198 +7,221 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="page-noise" aria-hidden="true"></div>
-    <div class="floating-emojis" aria-hidden="true">
-      <span>🎂</span>
-      <span>✨</span>
-      <span>🐶</span>
-      <span>💅</span>
-      <span>🎉</span>
-      <span>💖</span>
-    </div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
     <header class="hero">
-      <div class="hero-marquee" aria-hidden="true">
-        <span>happy birthday • happy birthday • happy birthday • happy birthday • </span>
-        <span>happy birthday • happy birthday • happy birthday • happy birthday • </span>
-      </div>
-      <div class="hero-burst" aria-hidden="true">
-        <span>HAPPY</span>
-        <span>BIRTHDAY</span>
-        <span>ANYA</span>
+      <div class="hero-track" aria-hidden="true">
+        <span>HAPPY BIRTHDAY</span>
+        <span>HAPPY BIRTHDAY</span>
+        <span>HAPPY BIRTHDAY</span>
       </div>
 
-      <nav class="top-bar">
-        <div class="badge">Anya's Birthday Bash</div>
-        <button class="glow-button music-toggle" id="musicToggle" type="button">
-          Toggle Birthday Music
-        </button>
-      </nav>
+      <div class="hero-inner">
+        <div class="hero-copy reveal">
+          <p class="tag">birthday transmission</p>
+          <h1>
+            <span>HAPPY</span>
+            <span>BIRTHDAY</span>
+            <span>ANYA</span>
+          </h1>
+          <p class="lede">
+            Loud, shiny, slightly ridiculous, and surprisingly well-designed. Exactly
+            how a proper Anya birthday page should feel.
+          </p>
+          <div class="hero-actions">
+            <button class="party-button interactive" id="startButton" type="button">
+              Start The Bash
+            </button>
+            <button class="party-button alt interactive" id="musicToggle" type="button">
+              Toggle Birthday Music
+            </button>
+          </div>
+        </div>
 
-      <div class="hero-card reveal">
-        <p class="eyebrow">WARNING: excessive celebration detected</p>
-        <h1>Anya's Birthday Bash</h1>
-        <p class="hero-copy">
-          The internet was not ready for this amount of birthday glamour, nonsense,
-          and lovingly weaponized friendship.
-        </p>
-        <div class="hero-actions">
-          <a class="glow-button" href="#quiz">Enter The Noise Zone</a>
-          <button class="glow-button alt" id="heroConfetti" type="button">
-            Launch Confetti Immediately
+        <div class="hero-scoreboard reveal">
+          <div class="score-chip">
+            <span class="score-label">Mini-games cleared</span>
+            <strong id="winCount">0 / 3</strong>
+          </div>
+          <div class="score-chip">
+            <span class="score-label">Vibe status</span>
+            <strong id="vibeText">warming up</strong>
+          </div>
+          <button class="score-chip secret-trigger interactive" id="secret67" type="button">
+            emergency 67
           </button>
         </div>
       </div>
     </header>
 
     <main>
-      <section class="section intro reveal">
-        <div class="section-heading">
-          <p class="eyebrow">Lovingly disrespectful</p>
-          <h2>Birthday Roast, Served Warm</h2>
+      <section class="section manifesto reveal">
+        <div class="section-head">
+          <p class="tag">the brief</p>
+          <h2>This one is for the lore</h2>
         </div>
-        <p class="roast">
-          Anya, you are an icon, a legend, and somehow also the person most likely
-          to send a voice note that starts with "wait no listen" and ends 4 business
-          days later. Your vibe is luxury, chaos, and accidentally becoming the main
-          character in stories that should have been normal. We celebrate you today:
-          queen of being gorgeous, hilarious, and just suspicious enough to make any
-          group chat stronger.
+        <p>
+          No fake inspirational quotes. No random AI nonsense. Just a birthday page
+          with internet energy, dumb little challenges, and enough sparkle to feel
+          like opening twelve browser tabs at once in the best possible way.
         </p>
       </section>
 
-      <section class="section quiz reveal" id="quiz">
-        <div class="section-heading">
-          <p class="eyebrow">Academic excellence</p>
-          <h2>How Well Do You Survive Anya Energy?</h2>
+      <section class="section arcade reveal" id="games">
+        <div class="section-head">
+          <p class="tag">play here</p>
+          <h2>Three tiny birthday games</h2>
         </div>
-        <p class="tiny-note">
-          Every answer is judged by the International Council of Birthday Delusion.
-        </p>
-        <div class="quiz-card">
-          <div id="quizProgress" class="quiz-progress">Question 1 of 3</div>
-          <h3 id="quizQuestion">When Anya arrives to the function, what changes first?</h3>
-          <div class="quiz-options" id="quizOptions">
-            <button class="quiz-option interactive" type="button">The lighting gets better</button>
-            <button class="quiz-option interactive" type="button">The group chat gets louder</button>
-            <button class="quiz-option interactive" type="button">The room files a glamour report</button>
-          </div>
-          <div class="cake-reveal hidden" id="cakeReveal">
-            <div class="cake" aria-hidden="true">
-              <div class="cake-candle"></div>
-              <div class="cake-top"></div>
-              <div class="cake-body"></div>
-              <div class="cake-base"></div>
+
+        <div class="game-grid">
+          <article class="game-card">
+            <div class="game-topline">
+              <span>01</span>
+              <p>Candle Panic</p>
             </div>
-            <p id="cakeMessage">
-              Congratulations. You passed the exam in Advanced Anya Studies and unlocked the ceremonial birthday cake.
-            </p>
-            <button class="glow-button interactive" id="cakeButton" type="button">
-              Summon More Cake Energy
+            <h3>Light every candle before the timer gives you attitude.</h3>
+            <div class="status-line">
+              <span id="candleStatus">8 candles waiting</span>
+              <span id="candleTimer">12.0s</span>
+            </div>
+            <div class="candles" id="candlesBoard"></div>
+            <button class="mini-button interactive" id="candleReset" type="button">
+              Reset Candles
             </button>
-          </div>
+          </article>
+
+          <article class="game-card">
+            <div class="game-topline">
+              <span>02</span>
+              <p>Gift Hunt</p>
+            </div>
+            <h3>Find Diode hiding in the gift pile.</h3>
+            <p class="helper">One box is correct. The others are just drama.</p>
+            <div class="gift-grid" id="giftBoard"></div>
+            <button class="mini-button interactive" id="giftReset" type="button">
+              Shuffle Gifts
+            </button>
+            <p class="status-message" id="giftStatus">Diode has not been located yet.</p>
+          </article>
+
+          <article class="game-card">
+            <div class="game-topline">
+              <span>03</span>
+              <p>Cake Lab</p>
+            </div>
+            <h3>Build the final cake by locking three good decisions.</h3>
+            <div class="cake-stage" id="cakeStage">
+              <div class="cake-preview">
+                <div class="cake-candle"></div>
+                <div class="cake-top" id="cakeTop"></div>
+                <div class="cake-middle" id="cakeMiddle"></div>
+                <div class="cake-bottom" id="cakeBottom"></div>
+              </div>
+            </div>
+            <div class="cake-controls">
+              <button class="mini-button interactive" data-cake-part="top" type="button">
+                Frosting
+              </button>
+              <button class="mini-button interactive" data-cake-part="middle" type="button">
+                Filling
+              </button>
+              <button class="mini-button interactive" data-cake-part="bottom" type="button">
+                Base
+              </button>
+            </div>
+            <p class="status-message" id="cakeStatus">Cake is currently under fashionable construction.</p>
+          </article>
         </div>
       </section>
 
       <section class="section diode reveal">
-        <div class="section-heading">
-          <p class="eyebrow">Critical recognition</p>
-          <h2>Dog Diode Appreciation Zone</h2>
+        <div class="section-head">
+          <p class="tag">special guest</p>
+          <h2>Diode fan club</h2>
         </div>
-        <div class="diode-card">
-          <div class="dog-portrait" aria-hidden="true">🐶</div>
+        <div class="diode-card interactive">
+          <div class="diode-icon">🐶</div>
           <div>
             <p>
-              Diode is not merely a dog. Diode is a distinguished beam of emotional
-              support, snack detection technology, and elite tail-powered joy
-              distribution. Frankly, every birthday needs one certified good noodle.
+              Diode remains the uncontested MVP of birthday support operations:
+              excellent face card, elite side profile, and the kind of emotional
+              range only a dog and a soap opera lead can deliver.
             </p>
-            <ul class="award-list">
-              <li>Best Supporting Floof in a Chaotic Celebration</li>
-              <li>Most Likely to Improve the Vibes by 9000%</li>
-              <li>Honorary CEO of Barketing and Cuteness</li>
-            </ul>
+            <div class="ribbon-row">
+              <span>best ears</span>
+              <span>top sniffer</span>
+              <span>vibe security</span>
+            </div>
           </div>
         </div>
       </section>
 
       <section class="section gallery reveal">
-        <div class="section-heading">
-          <p class="eyebrow">Evidence collected</p>
-          <h2>Photo Gallery</h2>
+        <div class="section-head">
+          <p class="tag">gallery mode</p>
+          <h2>Put the real photos here later</h2>
         </div>
         <div class="gallery-grid">
-          <article class="photo-card tilt">
-            <div class="photo-art gradient-one">💖</div>
-            <p>Serving face like the camera owed money.</p>
+          <article class="photo-tile interactive">
+            <div class="photo-art photo-a">✦</div>
+            <p>For the photo where Anya looks like she owns the venue.</p>
           </article>
-          <article class="photo-card tilt">
-            <div class="photo-art gradient-two">🎂</div>
-            <p>The exact moment the cake realized its destiny.</p>
+          <article class="photo-tile interactive">
+            <div class="photo-art photo-b">★</div>
+            <p>For the photo where the cake is nervous.</p>
           </article>
-          <article class="photo-card tilt">
-            <div class="photo-art gradient-three">🐶</div>
-            <p>Diode supervising the function with no notes.</p>
+          <article class="photo-tile interactive">
+            <div class="photo-art photo-c">✿</div>
+            <p>For the Diode paparazzi moment.</p>
           </article>
-          <article class="photo-card tilt">
-            <div class="photo-art gradient-four">✨</div>
-            <p>Glamour levels classified by international law.</p>
+          <article class="photo-tile interactive">
+            <div class="photo-art photo-d">☻</div>
+            <p>For the blurry one that somehow becomes everyone's favorite.</p>
           </article>
         </div>
       </section>
 
       <section class="section awards reveal">
-        <div class="section-heading">
-          <p class="eyebrow">Totally real institution</p>
-          <h2>Fake Awards</h2>
+        <div class="section-head">
+          <p class="tag">official business</p>
+          <h2>Very serious awards</h2>
         </div>
-        <div class="awards-grid">
-          <article class="award-card">
-            <h3>Most Powerful Side-Eye</h3>
-            <p>Issued after independent testing shattered 3 mirrors and 1 ego.</p>
-          </article>
-          <article class="award-card">
-            <h3>Lifetime Achievement in Looking Expensive</h3>
-            <p>Presented for consistently dressing like the plot twist.</p>
-          </article>
-          <article class="award-card">
-            <h3>Top Scholar of Silly Behavior</h3>
-            <p>Research focus: nonsense, mischief, and elite timing.</p>
-          </article>
+        <div class="award-row">
+          <button class="award-pill interactive" data-award="Main character under fluorescent lighting">
+            Main character under fluorescent lighting
+          </button>
+          <button class="award-pill interactive" data-award="Most likely to make chaos look curated">
+            Most likely to make chaos look curated
+          </button>
+          <button class="award-pill interactive" data-award="World champion of arriving and improving the scene">
+            World champion of arriving and improving the scene
+          </button>
         </div>
-      </section>
-
-      <section class="section quotes reveal">
-        <div class="section-heading">
-          <p class="eyebrow">Fresh nonsense on demand</p>
-          <h2>Random Funny Quote Generator</h2>
-        </div>
-        <div class="quote-box">
-          <p id="quoteText">
-            "Anya doesn't enter the room. The room adjusts its personality."
-          </p>
-          <button class="glow-button interactive" id="quoteButton" type="button">Generate Another Ridiculous Quote</button>
-        </div>
+        <p class="status-message" id="awardStatus">Select an award to issue a completely objective ruling.</p>
       </section>
 
       <section class="section finale reveal">
-        <div class="section-heading">
-          <p class="eyebrow">Absolutely inadvisable</p>
-          <h2>Final Chaos Sequence</h2>
+        <div class="section-head">
+          <p class="tag">endgame</p>
+          <h2>Maximum chaos, but tasteful</h2>
         </div>
-        <button class="chaos-button interactive" id="chaosButton" type="button">
-          PRESS FOR MAXIMUM CHAOS
-        </button>
+        <div class="finale-panel">
+          <p id="finaleText">
+            Clear all three games to unlock the giant birthday cake drop.
+          </p>
+          <button class="finale-button interactive" id="finaleButton" type="button" disabled>
+            DROP THE CAKE
+          </button>
+        </div>
       </section>
     </main>
-
-    <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
     <script src="./script.js"></script>
   </body>
