@@ -28,6 +28,11 @@
         <span>happy birthday • happy birthday • happy birthday • happy birthday • </span>
         <span>happy birthday • happy birthday • happy birthday • happy birthday • </span>
       </div>
+      <div class="hero-burst" aria-hidden="true">
+        <span>HAPPY</span>
+        <span>BIRTHDAY</span>
+        <span>ANYA</span>
+      </div>
 
       <nav class="top-bar">
         <div class="badge">Anya's Birthday Bash</div>
@@ -44,7 +49,7 @@
           and lovingly weaponized friendship.
         </p>
         <div class="hero-actions">
-          <a class="glow-button" href="#soundboard">Enter The Noise Zone</a>
+          <a class="glow-button" href="#quiz">Enter The Noise Zone</a>
           <button class="glow-button alt" id="heroConfetti" type="button">
             Launch Confetti Immediately
           </button>
@@ -68,18 +73,37 @@
         </p>
       </section>
 
-      <section class="section soundboard reveal" id="soundboard">
+      <section class="section quiz reveal" id="quiz">
         <div class="section-heading">
-          <p class="eyebrow">Press responsibly (or not)</p>
-          <h2>Meme Soundboard</h2>
+          <p class="eyebrow">Academic excellence</p>
+          <h2>How Well Do You Survive Anya Energy?</h2>
         </div>
-        <div class="soundboard-grid">
-          <button class="sound-button" data-sound="67" type="button">67</button>
-          <button class="sound-button" data-sound="fahh" type="button">FAHH</button>
-          <button class="sound-button" data-sound="vine-boom" type="button">vine boom</button>
-          <button class="sound-button" data-sound="bruh" type="button">bruh</button>
+        <p class="tiny-note">
+          Every answer is judged by the International Council of Birthday Delusion.
+        </p>
+        <div class="quiz-card">
+          <div id="quizProgress" class="quiz-progress">Question 1 of 3</div>
+          <h3 id="quizQuestion">When Anya arrives to the function, what changes first?</h3>
+          <div class="quiz-options" id="quizOptions">
+            <button class="quiz-option interactive" type="button">The lighting gets better</button>
+            <button class="quiz-option interactive" type="button">The group chat gets louder</button>
+            <button class="quiz-option interactive" type="button">The room files a glamour report</button>
+          </div>
+          <div class="cake-reveal hidden" id="cakeReveal">
+            <div class="cake" aria-hidden="true">
+              <div class="cake-candle"></div>
+              <div class="cake-top"></div>
+              <div class="cake-body"></div>
+              <div class="cake-base"></div>
+            </div>
+            <p id="cakeMessage">
+              Congratulations. You passed the exam in Advanced Anya Studies and unlocked the ceremonial birthday cake.
+            </p>
+            <button class="glow-button interactive" id="cakeButton" type="button">
+              Summon More Cake Energy
+            </button>
+          </div>
         </div>
-        <p class="tiny-note">Each button triggers a custom meme-style synth sound and tiny chaos burst.</p>
       </section>
 
       <section class="section diode reveal">
@@ -159,7 +183,7 @@
           <p id="quoteText">
             "Anya doesn't enter the room. The room adjusts its personality."
           </p>
-          <button class="glow-button" id="quoteButton" type="button">Generate Another Ridiculous Quote</button>
+          <button class="glow-button interactive" id="quoteButton" type="button">Generate Another Ridiculous Quote</button>
         </div>
       </section>
 
@@ -168,7 +192,7 @@
           <p class="eyebrow">Absolutely inadvisable</p>
           <h2>Final Chaos Sequence</h2>
         </div>
-        <button class="chaos-button" id="chaosButton" type="button">
+        <button class="chaos-button interactive" id="chaosButton" type="button">
           PRESS FOR MAXIMUM CHAOS
         </button>
       </section>

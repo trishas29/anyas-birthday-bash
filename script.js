@@ -4,8 +4,13 @@ const chaosButton = document.getElementById("chaosButton");
 const heroConfetti = document.getElementById("heroConfetti");
 const confettiLayer = document.getElementById("confettiLayer");
 const musicToggle = document.getElementById("musicToggle");
-const soundButtons = document.querySelectorAll(".sound-button");
 const revealItems = document.querySelectorAll(".reveal");
+const interactiveItems = document.querySelectorAll(".interactive, .photo-card, .award-card");
+const quizProgress = document.getElementById("quizProgress");
+const quizQuestion = document.getElementById("quizQuestion");
+const quizOptions = document.getElementById("quizOptions");
+const cakeReveal = document.getElementById("cakeReveal");
+const cakeButton = document.getElementById("cakeButton");
 
 const quotes = [
   '"Anya is proof that being iconic and slightly unhinged can coexist beautifully."',
@@ -16,10 +21,52 @@ const quotes = [
   '"Scientists still cannot explain how one person can be this glam and this chaotic."'
 ];
 
+const quizQuestions = [
+  {
+    prompt: "When Anya arrives to the function, what changes first?",
+    answers: [
+      "The lighting gets better",
+      "The group chat gets louder",
+      "The room files a glamour report"
+    ]
+  },
+  {
+    prompt: "What is Anya's strongest birthday superpower?",
+    answers: [
+      "Making chaos look premium",
+      "Turning side-eyes into art",
+      "Causing compliments to form naturally"
+    ]
+  },
+  {
+    prompt: "What should you do when Anya says, 'be calm'?",
+    answers: [
+      "Absolutely do not believe that",
+      "Prepare for glitter-related events",
+      "Accept your fate and bring cake"
+    ]
+  }
+];
+
 const confettiColors = ["#ff4fb3", "#ffd76b", "#ffffff", "#ff8fd1", "#ff9f1c"];
+const memeSoundUrls = [
+  "https://www.myinstants.com/media/sounds/bruh.mp3",
+  "https://www.myinstants.com/media/sounds/vine-boom-sound-effect_KT89XIq.mp3",
+  "https://www.myinstants.com/media/sounds/67_1.mp3",
+  "https://www.myinstants.com/media/sounds/fahh-but-louder.mp3"
+];
+
 let audioContext;
 let musicInterval;
 let musicEnabled = false;
+let quizIndex = 0;
+let activeMemeAudio;
+
+const memeAudios = memeSoundUrls.map((url) => new Audio(url));
+memeAudios.forEach((audio) => {
+  audio.preload = "auto";
+  audio.volume = 0.5;
+});
 
 function ensureAudio() {
   if (!audioContext) {
@@ -52,27 +99,23 @@ function playTone(frequency, duration, type = "sine", volume = 0.18, when = 0) {
   oscillator.stop(startAt + duration + 0.02);
 }
 
-function playSoundboard(name) {
-  const recipes = {
-    "67": () => {
-      playTone(660, 0.12, "square", 0.18, 0);
-      playTone(880, 0.12, "square", 0.15, 0.1);
-    },
-    fahh: () => {
-      playTone(420, 0.25, "sawtooth", 0.18, 0);
-      playTone(280, 0.3, "triangle", 0.14, 0.08);
-    },
-    "vine-boom": () => {
-      playTone(110, 0.45, "sawtooth", 0.25, 0);
-      playTone(73, 0.5, "triangle", 0.18, 0.03);
-    },
-    bruh: () => {
-      playTone(240, 0.18, "triangle", 0.18, 0);
-      playTone(180, 0.22, "sine", 0.12, 0.06);
-    }
-  };
+function playRandomMemeSound() {
+  const selected = memeAudios[Math.floor(Math.random() * memeAudios.length)];
 
-  recipes[name]?.();
+  try {
+    if (activeMemeAudio && activeMemeAudio !== selected) {
+      activeMemeAudio.pause();
+      activeMemeAudio.currentTime = 0;
+    }
+
+    selected.currentTime = 0;
+    selected.play().catch(() => {
+      playTone(660, 0.12, "square", 0.08);
+    });
+    activeMemeAudio = selected;
+  } catch {
+    playTone(660, 0.12, "square", 0.08);
+  }
 }
 
 function burstConfetti(intensity = 40) {
@@ -129,13 +172,49 @@ function toggleMusic() {
   }
 }
 
+function renderQuizQuestion() {
+  const current = quizQuestions[quizIndex];
+
+  quizProgress.textContent = `Question ${quizIndex + 1} of ${quizQuestions.length}`;
+  quizQuestion.textContent = current.prompt;
+  quizOptions.innerHTML = "";
+
+  current.answers.forEach((answer, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "quiz-option interactive";
+    button.textContent = answer;
+
+    button.addEventListener("click", () => {
+      playRandomMemeSound();
+      burstConfetti(20 + index * 5);
+      button.classList.add("correct");
+
+      window.setTimeout(() => {
+        quizIndex += 1;
+        if (quizIndex < quizQuestions.length) {
+          renderQuizQuestion();
+        } else {
+          quizProgress.textContent = "Exam complete";
+          quizQuestion.textContent = "The council has reviewed your answers and found them delightfully unserious.";
+          quizOptions.innerHTML = "";
+          cakeReveal.classList.remove("hidden");
+          burstConfetti(100);
+        }
+      }, 550);
+    });
+
+    quizOptions.appendChild(button);
+  });
+}
+
 function activateChaosMode() {
   document.body.classList.add("chaos-mode");
   burstConfetti(120);
 
-  ["67", "fahh", "vine-boom", "bruh"].forEach((sound, index) => {
-    window.setTimeout(() => playSoundboard(sound), index * 160);
-  });
+  for (let i = 0; i < 5; i += 1) {
+    window.setTimeout(playRandomMemeSound, i * 180);
+  }
 
   const colors = [
     "linear-gradient(135deg, #16001f, #32053f)",
@@ -159,6 +238,14 @@ function activateChaosMode() {
   }, 1700);
 }
 
+function attachAmbientClicks() {
+  interactiveItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      playRandomMemeSound();
+    });
+  });
+}
+
 const observer = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -174,23 +261,21 @@ revealItems.forEach((item) => observer.observe(item));
 
 quoteButton.addEventListener("click", () => {
   generateQuote();
-  playTone(700, 0.12, "square", 0.08);
 });
 
 heroConfetti.addEventListener("click", () => burstConfetti(80));
 chaosButton.addEventListener("click", activateChaosMode);
 musicToggle.addEventListener("click", toggleMusic);
 
-soundButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const { sound } = button.dataset;
-    playSoundboard(sound);
-    burstConfetti(18);
-    button.classList.remove("is-playing");
-    void button.offsetWidth;
-    button.classList.add("is-playing");
+if (cakeButton) {
+  cakeButton.addEventListener("click", () => {
+    burstConfetti(90);
+    playRandomMemeSound();
   });
-});
+}
+
+attachAmbientClicks();
+renderQuizQuestion();
 
 window.addEventListener("load", () => {
   setTimeout(() => burstConfetti(60), 300);
