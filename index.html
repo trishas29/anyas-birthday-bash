@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anya's Birthday Bash</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-noise" aria-hidden="true"></div>
+    <div class="floating-emojis" aria-hidden="true">
+      <span>🎂</span>
+      <span>✨</span>
+      <span>🐶</span>
+      <span>💅</span>
+      <span>🎉</span>
+      <span>💖</span>
+    </div>
+
+    <header class="hero">
+      <div class="hero-marquee" aria-hidden="true">
+        <span>happy birthday • happy birthday • happy birthday • happy birthday • </span>
+        <span>happy birthday • happy birthday • happy birthday • happy birthday • </span>
+      </div>
+
+      <nav class="top-bar">
+        <div class="badge">Anya's Birthday Bash</div>
+        <button class="glow-button music-toggle" id="musicToggle" type="button">
+          Toggle Birthday Music
+        </button>
+      </nav>
+
+      <div class="hero-card reveal">
+        <p class="eyebrow">WARNING: excessive celebration detected</p>
+        <h1>Anya's Birthday Bash</h1>
+        <p class="hero-copy">
+          The internet was not ready for this amount of birthday glamour, nonsense,
+          and lovingly weaponized friendship.
+        </p>
+        <div class="hero-actions">
+          <a class="glow-button" href="#soundboard">Enter The Noise Zone</a>
+          <button class="glow-button alt" id="heroConfetti" type="button">
+            Launch Confetti Immediately
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section intro reveal">
+        <div class="section-heading">
+          <p class="eyebrow">Lovingly disrespectful</p>
+          <h2>Birthday Roast, Served Warm</h2>
+        </div>
+        <p class="roast">
+          Anya, you are an icon, a legend, and somehow also the person most likely
+          to send a voice note that starts with "wait no listen" and ends 4 business
+          days later. Your vibe is luxury, chaos, and accidentally becoming the main
+          character in stories that should have been normal. We celebrate you today:
+          queen of being gorgeous, hilarious, and just suspicious enough to make any
+          group chat stronger.
+        </p>
+      </section>
+
+      <section class="section soundboard reveal" id="soundboard">
+        <div class="section-heading">
+          <p class="eyebrow">Press responsibly (or not)</p>
+          <h2>Meme Soundboard</h2>
+        </div>
+        <div class="soundboard-grid">
+          <button class="sound-button" data-sound="67" type="button">67</button>
+          <button class="sound-button" data-sound="fahh" type="button">FAHH</button>
+          <button class="sound-button" data-sound="vine-boom" type="button">vine boom</button>
+          <button class="sound-button" data-sound="bruh" type="button">bruh</button>
+        </div>
+        <p class="tiny-note">Each button triggers a custom meme-style synth sound and tiny chaos burst.</p>
+      </section>
+
+      <section class="section diode reveal">
+        <div class="section-heading">
+          <p class="eyebrow">Critical recognition</p>
+          <h2>Dog Diode Appreciation Zone</h2>
+        </div>
+        <div class="diode-card">
+          <div class="dog-portrait" aria-hidden="true">🐶</div>
+          <div>
+            <p>
+              Diode is not merely a dog. Diode is a distinguished beam of emotional
+              support, snack detection technology, and elite tail-powered joy
+              distribution. Frankly, every birthday needs one certified good noodle.
+            </p>
+            <ul class="award-list">
+              <li>Best Supporting Floof in a Chaotic Celebration</li>
+              <li>Most Likely to Improve the Vibes by 9000%</li>
+              <li>Honorary CEO of Barketing and Cuteness</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section gallery reveal">
+        <div class="section-heading">
+          <p class="eyebrow">Evidence collected</p>
+          <h2>Photo Gallery</h2>
+        </div>
+        <div class="gallery-grid">
+          <article class="photo-card tilt">
+            <div class="photo-art gradient-one">💖</div>
+            <p>Serving face like the camera owed money.</p>
+          </article>
+          <article class="photo-card tilt">
+            <div class="photo-art gradient-two">🎂</div>
+            <p>The exact moment the cake realized its destiny.</p>
+          </article>
+          <article class="photo-card tilt">
+            <div class="photo-art gradient-three">🐶</div>
+            <p>Diode supervising the function with no notes.</p>
+          </article>
+          <article class="photo-card tilt">
+            <div class="photo-art gradient-four">✨</div>
+            <p>Glamour levels classified by international law.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section awards reveal">
+        <div class="section-heading">
+          <p class="eyebrow">Totally real institution</p>
+          <h2>Fake Awards</h2>
+        </div>
+        <div class="awards-grid">
+          <article class="award-card">
+            <h3>Most Powerful Side-Eye</h3>
+            <p>Issued after independent testing shattered 3 mirrors and 1 ego.</p>
+          </article>
+          <article class="award-card">
+            <h3>Lifetime Achievement in Looking Expensive</h3>
+            <p>Presented for consistently dressing like the plot twist.</p>
+          </article>
+          <article class="award-card">
+            <h3>Top Scholar of Silly Behavior</h3>
+            <p>Research focus: nonsense, mischief, and elite timing.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section quotes reveal">
+        <div class="section-heading">
+          <p class="eyebrow">Fresh nonsense on demand</p>
+          <h2>Random Funny Quote Generator</h2>
+        </div>
+        <div class="quote-box">
+          <p id="quoteText">
+            "Anya doesn't enter the room. The room adjusts its personality."
+          </p>
+          <button class="glow-button" id="quoteButton" type="button">Generate Another Ridiculous Quote</button>
+        </div>
+      </section>
+
+      <section class="section finale reveal">
+        <div class="section-heading">
+          <p class="eyebrow">Absolutely inadvisable</p>
+          <h2>Final Chaos Sequence</h2>
+        </div>
+        <button class="chaos-button" id="chaosButton" type="button">
+          PRESS FOR MAXIMUM CHAOS
+        </button>
+      </section>
+    </main>
+
+    <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
