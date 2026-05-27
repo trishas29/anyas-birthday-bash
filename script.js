@@ -18,8 +18,14 @@ const cakeBottom = document.getElementById("cakeBottom");
 const cakeStatus = document.getElementById("cakeStatus");
 const awardPills = document.querySelectorAll(".award-pill");
 const awardStatus = document.getElementById("awardStatus");
+const soundStatus = document.getElementById("soundStatus");
+const soundChips = document.querySelectorAll(".sound-chip");
 const finaleButton = document.getElementById("finaleButton");
 const finaleText = document.getElementById("finaleText");
+const cakeOverlay = document.getElementById("cakeOverlay");
+const overlayText = document.getElementById("overlayText");
+const overlayEncore = document.getElementById("overlayEncore");
+const overlayClose = document.getElementById("overlayClose");
 
 const confettiColors = ["#ff4fa3", "#ffd96d", "#ffffff", "#9cf7d5", "#ff9bc9"];
 const soundPool = {
@@ -27,13 +33,16 @@ const soundPool = {
     { name: "bruh", url: "https://www.myinstants.com/media/sounds/movie_1.mp3" },
     { name: "vine boom", url: "https://www.myinstants.com/media/sounds/vine-boom.mp3" },
     { name: "fahh", url: "https://www.myinstants.com/media/sounds/fahh-but-louder.mp3" },
-    { name: "67", url: "https://www.myinstants.com/media/sounds/67_SQlv2Xv.mp3" }
+    { name: "67", url: "https://www.myinstants.com/media/sounds/67_SQlv2Xv.mp3" },
+    { name: "tung tung tung sahur", url: "https://www.myinstants.com/media/sounds/tung-tung-tung-tung-sahur.mp3" }
   ],
   exact: {
     "67": "https://www.myinstants.com/media/sounds/67_SQlv2Xv.mp3",
     bruh: "https://www.myinstants.com/media/sounds/movie_1.mp3",
     vine: "https://www.myinstants.com/media/sounds/vine-boom.mp3",
-    fahh: "https://www.myinstants.com/media/sounds/fahh-but-louder.mp3"
+    fahh: "https://www.myinstants.com/media/sounds/fahh-but-louder.mp3",
+    sahur: "https://www.myinstants.com/media/sounds/tung-tung-tung-tung-sahur.mp3",
+    fortyone: "https://www.myinstants.com/media/sounds/41.mp3"
   }
 };
 
@@ -111,22 +120,28 @@ function playBirthdayLoop() {
 }
 
 function playAudioUrl(url) {
-  try {
-    if (activeAudio) {
-      activeAudio.pause();
-      activeAudio.currentTime = 0;
-    }
+  return new Promise((resolve) => {
+    try {
+      if (activeAudio) {
+        activeAudio.pause();
+        activeAudio.currentTime = 0;
+      }
 
-    const audio = new Audio(url);
-    audio.preload = "auto";
-    audio.volume = 0.45;
-    audio.play().catch(() => {
+      const audio = new Audio(url);
+      audio.preload = "auto";
+      audio.volume = 0.45;
+      audio.addEventListener("ended", () => resolve(true), { once: true });
+      audio.addEventListener("error", () => resolve(false), { once: true });
+      audio.play().then(() => resolve(true)).catch(() => {
+        playTone(660, 0.08, "square", 0.05);
+        resolve(false);
+      });
+      activeAudio = audio;
+    } catch {
       playTone(660, 0.08, "square", 0.05);
-    });
-    activeAudio = audio;
-  } catch {
-    playTone(660, 0.08, "square", 0.05);
-  }
+      resolve(false);
+    }
+  });
 }
 
 function playRandomSound() {
@@ -138,10 +153,13 @@ function playRandomSound() {
   playAudioUrl(soundPool.random[nextIndex].url);
 }
 
-function playExactSound(name) {
+async function playExactSound(name) {
   const url = soundPool.exact[name];
   if (url) {
-    playAudioUrl(url);
+    const worked = await playAudioUrl(url);
+    if (!worked && soundStatus) {
+      soundStatus.textContent = `${name} was dramatic and failed to load, so the page improvised.`;
+    }
   } else {
     playRandomSound();
   }
@@ -315,14 +333,32 @@ function finaleDrop() {
   }
 
   document.body.classList.add("party-surge");
-  finaleText.textContent = "Cake dropped. Party sustained. Anya wins again.";
+  finaleText.textContent = "Cake mode engaged. Please remain seated.";
   burstConfetti(180);
   playExactSound("fahh");
   window.setTimeout(() => playExactSound("67"), 260);
+  window.setTimeout(() => playExactSound("sahur"), 620);
+  window.setTimeout(() => playExactSound("vine"), 940);
+  openCakeOverlay();
 
   window.setTimeout(() => {
     document.body.classList.remove("party-surge");
   }, 1400);
+}
+
+function openCakeOverlay() {
+  cakeOverlay.classList.add("visible");
+  cakeOverlay.setAttribute("aria-hidden", "false");
+  overlayText.textContent = "Anya's birthday cake has escalated into a full-screen event.";
+
+  for (let index = 0; index < 5; index += 1) {
+    window.setTimeout(() => burstConfetti(90), index * 260);
+  }
+}
+
+function closeCakeOverlay() {
+  cakeOverlay.classList.remove("visible");
+  cakeOverlay.setAttribute("aria-hidden", "true");
 }
 
 function toggleMusic() {
@@ -365,6 +401,14 @@ awardPills.forEach((pill) => {
   });
 });
 
+soundChips.forEach((chip) => {
+  chip.addEventListener("click", async () => {
+    const soundName = chip.dataset.soundName;
+    soundStatus.textContent = `Deploying ${chip.textContent}.`;
+    await playExactSound(soundName);
+  });
+});
+
 startButton.addEventListener("click", () => {
   burstConfetti(110);
   playExactSound("67");
@@ -377,6 +421,12 @@ secret67.addEventListener("click", () => playExactSound("67"));
 candleReset.addEventListener("click", createCandles);
 giftReset.addEventListener("click", buildGiftBoard);
 finaleButton.addEventListener("click", finaleDrop);
+overlayEncore.addEventListener("click", () => {
+  openCakeOverlay();
+  playExactSound("67");
+  window.setTimeout(() => playExactSound("sahur"), 240);
+});
+overlayClose.addEventListener("click", closeCakeOverlay);
 
 addRandomSoundOnClick(".photo-tile");
 addRandomSoundOnClick(".diode-card");

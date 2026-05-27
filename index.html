@@ -207,6 +207,22 @@
         <p class="status-message" id="awardStatus">Select an award to issue a completely objective ruling.</p>
       </section>
 
+      <section class="section sounds reveal">
+        <div class="section-head">
+          <p class="tag">audio snacks</p>
+          <h2>More internet noises</h2>
+        </div>
+        <div class="sound-row">
+          <button class="sound-chip interactive" data-sound-name="67" type="button">67</button>
+          <button class="sound-chip interactive" data-sound-name="bruh" type="button">bruh</button>
+          <button class="sound-chip interactive" data-sound-name="vine" type="button">vine boom</button>
+          <button class="sound-chip interactive" data-sound-name="fahh" type="button">fahh</button>
+          <button class="sound-chip interactive" data-sound-name="fortyone" type="button">FORTY ONE</button>
+          <button class="sound-chip interactive" data-sound-name="sahur" type="button">TUNG TUNG TUNG SAHUR</button>
+        </div>
+        <p class="status-message" id="soundStatus">Tap one when the page needs extra damage.</p>
+      </section>
+
       <section class="section finale reveal">
         <div class="section-head">
           <p class="tag">endgame</p>
@@ -217,11 +233,35 @@
             Clear all three games to unlock the giant birthday cake drop.
           </p>
           <button class="finale-button interactive" id="finaleButton" type="button" disabled>
-            DROP THE CAKE
+            UNLEASH THE CAKE
           </button>
         </div>
       </section>
     </main>
+
+    <div class="cake-overlay" id="cakeOverlay" aria-hidden="true">
+      <div class="cake-overlay-inner">
+        <p class="overlay-kicker">final boss defeated</p>
+        <h2>CAKE MODE</h2>
+        <div class="mega-cake" aria-hidden="true">
+          <div class="mega-candle"></div>
+          <div class="mega-layer top"></div>
+          <div class="mega-layer middle"></div>
+          <div class="mega-layer bottom"></div>
+        </div>
+        <p id="overlayText">
+          Anya's birthday cake has reached unsafe cinematic levels.
+        </p>
+        <div class="overlay-actions">
+          <button class="party-button interactive" id="overlayEncore" type="button">
+            Do It Again
+          </button>
+          <button class="party-button alt interactive" id="overlayClose" type="button">
+            Return To Society
+          </button>
+        </div>
+      </div>
+    </div>
 
     <script src="./script.js"></script>
   </body>
