@@ -58,14 +58,14 @@ const exactSounds = {
 const imagePool = {
   nyan: [
     "./assets/memes/nyan/nyan-1.gif",
-    "./assets/memes/nyan/nyan-2.png",
+    "./assets/memes/nyan/nyan-2.jpg",
     "https://commons.wikimedia.org/wiki/Special:Redirect/file/NyanCat.gif",
     "https://commons.wikimedia.org/wiki/Special:Redirect/file/Nyan_cat_250px_frame.PNG"
   ],
   brainrot: [
-    "./assets/memes/brainrot/brainrot-1.png",
-    "./assets/memes/brainrot/brainrot-2.png",
-    "./assets/memes/brainrot/brainrot-3.png",
+    "./assets/memes/brainrot/brainrot-1.jpg",
+    "./assets/memes/brainrot/brainrot-2.jpg",
+    "./assets/memes/brainrot/brainrot-3.jpg",
     "https://commons.wikimedia.org/wiki/Special:Redirect/file/Full_image_of_Tung_Tung_Tung_Sahur.png",
     "https://static.wikia.nocookie.net/brainrotnew/images/3/3f/Tralalero_tralala.png",
     "https://static.wikia.nocookie.net/brainrotnew/images/f/f2/Bombardino_Crocodilo.png"
@@ -92,7 +92,7 @@ let musicInterval;
 let musicEnabled = false;
 let lastRandomSound = -1;
 let candleTimerId;
-let candleTimeLeft = 9;
+let candleTimeLeft = 13;
 let candlesLit = 0;
 let giftWinner = 0;
 let giftLocked = false;
@@ -102,7 +102,8 @@ let memoryAcceptingInput = false;
 let wordleRow = 0;
 let wordleSolved = false;
 let cakeTouched = false;
-const wordleAnswer = "LEGAL";
+const wordleAnswer = "PARTY";
+const candleGoal = 21;
 
 function ensureAudio() {
   if (!audioContext) {
@@ -238,11 +239,11 @@ function markGameCleared(id) {
 function createCandles() {
   candleBoard.innerHTML = "";
   candlesLit = 0;
-  candleTimeLeft = 9;
-  candleStatus.textContent = "12 candles waiting";
-  candleTimer.textContent = "9.0s";
+  candleTimeLeft = 13;
+  candleStatus.textContent = `${candleGoal} candles waiting`;
+  candleTimer.textContent = "13.0s";
 
-  for (let index = 0; index < 12; index += 1) {
+  for (let index = 0; index < candleGoal; index += 1) {
     const candle = document.createElement("button");
     candle.type = "button";
     candle.className = "candle interactive";
@@ -256,9 +257,9 @@ function createCandles() {
       candle.classList.add("lit");
       candlesLit += 1;
       playRandomSound();
-      candleStatus.textContent = `${12 - candlesLit} candles waiting`;
+      candleStatus.textContent = `${candleGoal - candlesLit} candles waiting`;
 
-      if (candlesLit === 12) {
+      if (candlesLit === candleGoal) {
         window.clearInterval(candleTimerId);
         candleStatus.textContent = "Candle trial cleared. Relic obtained.";
         markGameCleared("candles");
@@ -388,7 +389,7 @@ function submitWordleGuess() {
 
   wordleRow += 1;
   if (wordleRow >= 6) {
-    wordleStatus.textContent = "Wordle failed. The answer was LEGAL. Try again.";
+    wordleStatus.textContent = "Wordle failed. The answer was PARTY. Try again.";
     wordleInput.disabled = true;
     wordleSubmit.disabled = true;
     window.setTimeout(buildWordleBoard, 1200);

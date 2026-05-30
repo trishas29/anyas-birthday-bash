@@ -249,7 +249,6 @@ h3 {
 .intro-strip p,
 .helper,
 .status-message,
-.photo-instructions,
 .photo-tile figcaption,
 .finale-panel p {
   line-height: 1.55;
@@ -677,13 +676,6 @@ main {
 
 .status-message {
   color: var(--muted);
-}
-
-.photo-instructions {
-  margin-bottom: 1.2rem;
-  padding: 0.9rem;
-  border-left: 6px solid var(--acid);
-  background: rgba(182, 255, 0, 0.08);
 }
 
 .photo-columns {
