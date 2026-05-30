@@ -57,10 +57,15 @@ const exactSounds = {
 
 const imagePool = {
   nyan: [
+    "./assets/memes/nyan/nyan-1.gif",
+    "./assets/memes/nyan/nyan-2.png",
     "https://commons.wikimedia.org/wiki/Special:Redirect/file/NyanCat.gif",
     "https://commons.wikimedia.org/wiki/Special:Redirect/file/Nyan_cat_250px_frame.PNG"
   ],
   brainrot: [
+    "./assets/memes/brainrot/brainrot-1.png",
+    "./assets/memes/brainrot/brainrot-2.png",
+    "./assets/memes/brainrot/brainrot-3.png",
     "https://commons.wikimedia.org/wiki/Special:Redirect/file/Full_image_of_Tung_Tung_Tung_Sahur.png",
     "https://static.wikia.nocookie.net/brainrotnew/images/3/3f/Tralalero_tralala.png",
     "https://static.wikia.nocookie.net/brainrotnew/images/f/f2/Bombardino_Crocodilo.png"
@@ -301,9 +306,9 @@ function buildGiftBoard() {
       gift.classList.add("open");
 
       if (index === giftWinner) {
-        gift.innerHTML = '<img src="./assets/photos/diode/diode-find.jpg" alt="Diode">';
+        gift.innerHTML = '<img src="./assets/photos/diode/diode-find.jpeg" alt="Diode">';
         gift.querySelector("img")?.addEventListener("error", () => {
-          gift.textContent = "add diode-find.jpg";
+          gift.textContent = "add diode-find.jpeg";
         }, { once: true });
         giftLocked = true;
         giftStatus.textContent = "Diode located. Relic obtained.";
