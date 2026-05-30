@@ -7,116 +7,145 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;500;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <div class="grain" aria-hidden="true"></div>
+    <div class="chaos-layer" id="chaosLayer" aria-hidden="true"></div>
     <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
     <header class="hero">
+      <div class="headphones-banner">
+        For best experience: use headphones. The page makes questionable audio decisions.
+      </div>
       <div class="hero-track" aria-hidden="true">
-        <span>HAPPY BIRTHDAY</span>
-        <span>HAPPY BIRTHDAY</span>
-        <span>HAPPY BIRTHDAY</span>
+        <span>ANYA BIRTHDAY ARCADE</span>
+        <span>ANYA BIRTHDAY ARCADE</span>
+        <span>ANYA BIRTHDAY ARCADE</span>
       </div>
 
       <div class="hero-inner">
         <div class="hero-copy reveal">
-          <p class="tag">birthday transmission</p>
+          <p class="tag">birthday survival protocol</p>
           <h1>
-            <span>HAPPY</span>
+            <span>ANYA'S</span>
             <span>BIRTHDAY</span>
-            <span>ANYA</span>
+            <span>BASH</span>
           </h1>
           <p class="lede">
-            Loud, shiny, slightly ridiculous, and surprisingly well-designed. Exactly
-            how a proper Anya birthday page should feel.
+            Five chaotic trials. One unstable cake reactor. Random TikTok sounds.
+            Nyan cats in the airspace. Diode somewhere in the system.
           </p>
           <div class="hero-actions">
             <button class="party-button interactive" id="startButton" type="button">
-              Start The Bash
+              Start Chaos
             </button>
             <button class="party-button alt interactive" id="musicToggle" type="button">
-              Toggle Birthday Music
+              Birthday Music
             </button>
           </div>
         </div>
 
-        <div class="hero-scoreboard reveal">
+        <aside class="mission-panel reveal">
           <div class="score-chip">
-            <span class="score-label">Mini-games cleared</span>
-            <strong id="winCount">0 / 3</strong>
+            <span class="score-label">Relics collected</span>
+            <strong id="winCount">0 / 5</strong>
           </div>
           <div class="score-chip">
-            <span class="score-label">Vibe status</span>
-            <strong id="vibeText">warming up</strong>
+            <span class="score-label">Cake reactor</span>
+            <strong id="vibeText">asleep</strong>
+          </div>
+          <div class="relic-row" id="relicRow" aria-label="Birthday relic progress">
+            <span></span><span></span><span></span><span></span><span></span>
           </div>
           <button class="score-chip secret-trigger interactive" id="secret67" type="button">
-            emergency 67
+            random panic sound
           </button>
-        </div>
+        </aside>
       </div>
     </header>
 
     <main>
-      <section class="section manifesto reveal">
-        <div class="section-head">
-          <p class="tag">the brief</p>
-          <h2>This one is for the lore</h2>
-        </div>
+      <section class="intro-strip reveal">
         <p>
-          No fake inspirational quotes. No random AI nonsense. Just a birthday page
-          with internet energy, dumb little challenges, and enough sparkle to feel
-          like opening twelve browser tabs at once in the best possible way.
+          This is now a mini birthday arcade. Clear every game to wake the cake.
+          Losing is fine. The website will simply become more annoying.
         </p>
       </section>
 
-      <section class="section arcade reveal" id="games">
-        <div class="section-head">
-          <p class="tag">play here</p>
-          <h2>Three tiny birthday games</h2>
+      <section class="arcade" id="games">
+        <div class="section-head reveal">
+          <p class="tag">the trials</p>
+          <h2>Harder games, worse consequences</h2>
         </div>
 
         <div class="game-grid">
-          <article class="game-card">
+          <article class="game-card reveal" data-game-card="candles">
             <div class="game-topline">
               <span>01</span>
               <p>Candle Panic</p>
             </div>
-            <h3>Light every candle before the timer gives you attitude.</h3>
+            <h3>Light 12 candles before the timer runs out.</h3>
             <div class="status-line">
-              <span id="candleStatus">8 candles waiting</span>
-              <span id="candleTimer">12.0s</span>
+              <span id="candleStatus">12 candles waiting</span>
+              <span id="candleTimer">9.0s</span>
             </div>
             <div class="candles" id="candlesBoard"></div>
-            <button class="mini-button interactive" id="candleReset" type="button">
-              Reset Candles
-            </button>
+            <button class="mini-button interactive" id="candleReset" type="button">Retry</button>
           </article>
 
-          <article class="game-card">
+          <article class="game-card reveal" data-game-card="diode">
             <div class="game-topline">
               <span>02</span>
-              <p>Gift Hunt</p>
+              <p>Diode Hunt</p>
             </div>
-            <h3>Find Diode hiding in the gift pile.</h3>
-            <p class="helper">One box is correct. The others are just drama.</p>
+            <h3>Find Diode in a 16-box gift pile.</h3>
+            <p class="helper">Wrong boxes get louder. This is not legally fair.</p>
             <div class="gift-grid" id="giftBoard"></div>
-            <button class="mini-button interactive" id="giftReset" type="button">
-              Shuffle Gifts
-            </button>
-            <p class="status-message" id="giftStatus">Diode has not been located yet.</p>
+            <button class="mini-button interactive" id="giftReset" type="button">Shuffle</button>
+            <p class="status-message" id="giftStatus">Diode is currently off-grid.</p>
           </article>
 
-          <article class="game-card">
+          <article class="game-card reveal" data-game-card="memory">
             <div class="game-topline">
               <span>03</span>
-              <p>Cake Lab</p>
+              <p>Brainrot Sequence</p>
             </div>
-            <h3>Build the final cake by locking three good decisions.</h3>
+            <h3>Memorize the flashing pattern and repeat it.</h3>
+            <div class="memory-grid" id="memoryBoard">
+              <button class="memory-pad interactive" data-pad="0" type="button">TUNG</button>
+              <button class="memory-pad interactive" data-pad="1" type="button">NYAN</button>
+              <button class="memory-pad interactive" data-pad="2" type="button">CAKE</button>
+              <button class="memory-pad interactive" data-pad="3" type="button">DIODE</button>
+            </div>
+            <button class="mini-button interactive" id="memoryStart" type="button">Show Pattern</button>
+            <p class="status-message" id="memoryStatus">Pattern length: 6. No pressure.</p>
+          </article>
+
+          <article class="game-card reveal" data-game-card="nyan">
+            <div class="game-topline">
+              <span>04</span>
+              <p>Nyan Intercept</p>
+            </div>
+            <h3>Catch 10 flying nyan cats before they leave.</h3>
+            <div class="nyan-arena" id="nyanArena"></div>
+            <div class="status-line">
+              <span id="nyanStatus">0 / 10 intercepted</span>
+              <span id="nyanTimer">15.0s</span>
+            </div>
+            <button class="mini-button interactive" id="nyanStart" type="button">Launch Cats</button>
+          </article>
+
+          <article class="game-card reveal" data-game-card="cake">
+            <div class="game-topline">
+              <span>05</span>
+              <p>Cake Reactor</p>
+            </div>
+            <h3>Set the cake layers to the secret combo.</h3>
+            <p class="helper">Hint: acidic frosting, glitch filling, radioactive base.</p>
             <div class="cake-stage" id="cakeStage">
               <div class="cake-preview">
                 <div class="cake-candle"></div>
@@ -126,114 +155,92 @@
               </div>
             </div>
             <div class="cake-controls">
-              <button class="mini-button interactive" data-cake-part="top" type="button">
-                Frosting
-              </button>
-              <button class="mini-button interactive" data-cake-part="middle" type="button">
-                Filling
-              </button>
-              <button class="mini-button interactive" data-cake-part="bottom" type="button">
-                Base
-              </button>
+              <button class="mini-button interactive" data-cake-part="top" type="button">Frosting</button>
+              <button class="mini-button interactive" data-cake-part="middle" type="button">Filling</button>
+              <button class="mini-button interactive" data-cake-part="bottom" type="button">Base</button>
             </div>
-            <p class="status-message" id="cakeStatus">Cake is currently under fashionable construction.</p>
+            <p class="status-message" id="cakeStatus">Reactor is cold.</p>
           </article>
         </div>
       </section>
 
-      <section class="section diode reveal">
+      <section class="photo-zone reveal">
         <div class="section-head">
-          <p class="tag">special guest</p>
-          <h2>Diode fan club</h2>
+          <p class="tag">your photos go here</p>
+          <h2>Anya files and Diode evidence</h2>
         </div>
-        <div class="diode-card interactive">
-          <div class="diode-icon">🐶</div>
+        <div class="photo-instructions">
+          Put Anya photos in <code>assets/photos/anya</code>. Put Diode photos in
+          <code>assets/photos/diode</code>. Use the filenames shown in the slots
+          below, or edit the <code>src</code> paths in this section later.
+        </div>
+
+        <div class="photo-columns">
           <div>
-            <p>
-              Diode remains the uncontested MVP of birthday support operations:
-              excellent face card, elite side profile, and the kind of emotional
-              range only a dog and a soap opera lead can deliver.
-            </p>
-            <div class="ribbon-row">
-              <span>best ears</span>
-              <span>top sniffer</span>
-              <span>vibe security</span>
+            <h3>Anya gallery</h3>
+            <div class="gallery-grid">
+              <figure class="photo-tile interactive">
+                <img src="./assets/photos/anya/anya-1.jpg" alt="Anya photo 1" />
+                <figcaption>Anya: <code>anya-1.jpg</code></figcaption>
+              </figure>
+              <figure class="photo-tile interactive">
+                <img src="./assets/photos/anya/anya-2.jpg" alt="Anya photo 2" />
+                <figcaption>Anya: <code>anya-2.jpg</code></figcaption>
+              </figure>
+              <figure class="photo-tile interactive">
+                <img src="./assets/photos/anya/anya-3.jpg" alt="Anya photo 3" />
+                <figcaption>Anya: <code>anya-3.jpg</code></figcaption>
+              </figure>
+            </div>
+          </div>
+          <div>
+            <h3>Diode gallery</h3>
+            <div class="gallery-grid">
+              <figure class="photo-tile diode-photo interactive">
+                <img src="./assets/photos/diode/diode-1.jpg" alt="Diode photo 1" />
+                <figcaption>Diode: <code>diode-1.jpg</code></figcaption>
+              </figure>
+              <figure class="photo-tile diode-photo interactive">
+                <img src="./assets/photos/diode/diode-2.jpg" alt="Diode photo 2" />
+                <figcaption>Diode: <code>diode-2.jpg</code></figcaption>
+              </figure>
+              <figure class="photo-tile diode-photo interactive">
+                <img src="./assets/photos/diode/diode-3.jpg" alt="Diode photo 3" />
+                <figcaption>Diode: <code>diode-3.jpg</code></figcaption>
+              </figure>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="section gallery reveal">
+      <section class="awards reveal">
         <div class="section-head">
-          <p class="tag">gallery mode</p>
-          <h2>Put the real photos here later</h2>
-        </div>
-        <div class="gallery-grid">
-          <article class="photo-tile interactive">
-            <div class="photo-art photo-a">✦</div>
-            <p>For the photo where Anya looks like she owns the venue.</p>
-          </article>
-          <article class="photo-tile interactive">
-            <div class="photo-art photo-b">★</div>
-            <p>For the photo where the cake is nervous.</p>
-          </article>
-          <article class="photo-tile interactive">
-            <div class="photo-art photo-c">✿</div>
-            <p>For the Diode paparazzi moment.</p>
-          </article>
-          <article class="photo-tile interactive">
-            <div class="photo-art photo-d">☻</div>
-            <p>For the blurry one that somehow becomes everyone's favorite.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section awards reveal">
-        <div class="section-head">
-          <p class="tag">official business</p>
-          <h2>Very serious awards</h2>
+          <p class="tag">bonus ceremony</p>
+          <h2>Choose one official ruling</h2>
         </div>
         <div class="award-row">
-          <button class="award-pill interactive" data-award="Main character under fluorescent lighting">
-            Main character under fluorescent lighting
+          <button class="award-pill interactive" data-award="Most likely to make the group chat need a moderator">
+            Group chat hazard
           </button>
-          <button class="award-pill interactive" data-award="Most likely to make chaos look curated">
-            Most likely to make chaos look curated
+          <button class="award-pill interactive" data-award="Best dressed during completely unserious circumstances">
+            Fashion emergency
           </button>
-          <button class="award-pill interactive" data-award="World champion of arriving and improving the scene">
-            World champion of arriving and improving the scene
+          <button class="award-pill interactive" data-award="Diode-approved main character behavior">
+            Diode approved
           </button>
         </div>
-        <p class="status-message" id="awardStatus">Select an award to issue a completely objective ruling.</p>
+        <p class="status-message" id="awardStatus">The committee is waiting.</p>
       </section>
 
-      <section class="section sounds reveal">
-        <div class="section-head">
-          <p class="tag">audio snacks</p>
-          <h2>More internet noises</h2>
-        </div>
-        <div class="sound-row">
-          <button class="sound-chip interactive" data-sound-name="67" type="button">67</button>
-          <button class="sound-chip interactive" data-sound-name="bruh" type="button">bruh</button>
-          <button class="sound-chip interactive" data-sound-name="vine" type="button">vine boom</button>
-          <button class="sound-chip interactive" data-sound-name="fahh" type="button">fahh</button>
-          <button class="sound-chip interactive" data-sound-name="fortyone" type="button">FORTY ONE</button>
-          <button class="sound-chip interactive" data-sound-name="sahur" type="button">TUNG TUNG TUNG SAHUR</button>
-        </div>
-        <p class="status-message" id="soundStatus">Tap one when the page needs extra damage.</p>
-      </section>
-
-      <section class="section finale reveal">
+      <section class="finale reveal">
         <div class="section-head">
           <p class="tag">endgame</p>
-          <h2>Maximum chaos, but tasteful</h2>
+          <h2>Wake the cake reactor</h2>
         </div>
         <div class="finale-panel">
-          <p id="finaleText">
-            Clear all three games to unlock the giant birthday cake drop.
-          </p>
+          <p id="finaleText">Collect all 5 relics to unlock the final birthday detonation.</p>
           <button class="finale-button interactive" id="finaleButton" type="button" disabled>
-            UNLEASH THE CAKE
+            DETONATE CAKE
           </button>
         </div>
       </section>
@@ -241,24 +248,18 @@
 
     <div class="cake-overlay" id="cakeOverlay" aria-hidden="true">
       <div class="cake-overlay-inner">
-        <p class="overlay-kicker">final boss defeated</p>
-        <h2>CAKE MODE</h2>
+        <p class="overlay-kicker">cake reactor online</p>
+        <h2>ANYA WINS</h2>
         <div class="mega-cake" aria-hidden="true">
           <div class="mega-candle"></div>
           <div class="mega-layer top"></div>
           <div class="mega-layer middle"></div>
           <div class="mega-layer bottom"></div>
         </div>
-        <p id="overlayText">
-          Anya's birthday cake has reached unsafe cinematic levels.
-        </p>
+        <p id="overlayText">The cake has left normal reality.</p>
         <div class="overlay-actions">
-          <button class="party-button interactive" id="overlayEncore" type="button">
-            Do It Again
-          </button>
-          <button class="party-button alt interactive" id="overlayClose" type="button">
-            Return To Society
-          </button>
+          <button class="party-button interactive" id="overlayEncore" type="button">Again</button>
+          <button class="party-button alt interactive" id="overlayClose" type="button">Close</button>
         </div>
       </div>
     </div>
