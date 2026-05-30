@@ -8,6 +8,7 @@ Put Anya pictures here:
 
 Put Diode pictures here:
 
+- `assets/photos/diode/diode-find.jpg` for the hidden Diode Hunt relic
 - `assets/photos/diode/diode-1.jpg`
 - `assets/photos/diode/diode-2.jpg`
 - `assets/photos/diode/diode-3.jpg`

@@ -36,8 +36,9 @@
             <span>BASH</span>
           </h1>
           <p class="lede">
-            Five chaotic trials. One unstable cake reactor. Random TikTok sounds.
-            Nyan cats in the airspace. Diode somewhere in the system.
+            Five chaotic trials for Anya turning 21. One unstable cake reactor.
+            Random TikTok sounds. Nyan cats in the airspace. Diode somewhere in
+            the system.
           </p>
           <div class="hero-actions">
             <button class="party-button interactive" id="startButton" type="button">
@@ -57,6 +58,10 @@
           <div class="score-chip">
             <span class="score-label">Cake reactor</span>
             <strong id="vibeText">asleep</strong>
+          </div>
+          <div class="score-chip level-chip">
+            <span class="score-label">Age unlocked</span>
+            <strong>LEVEL 21</strong>
           </div>
           <div class="relic-row" id="relicRow" aria-label="Birthday relic progress">
             <span></span><span></span><span></span><span></span><span></span>
@@ -102,8 +107,8 @@
               <span>02</span>
               <p>Diode Hunt</p>
             </div>
-            <h3>Find Diode in a 16-box gift pile.</h3>
-            <p class="helper">Wrong boxes get louder. This is not legally fair.</p>
+            <h3>Find the real Diode photo in a 16-box gift pile.</h3>
+            <p class="helper">Add the target photo as <code>assets/photos/diode/diode-find.jpg</code>.</p>
             <div class="gift-grid" id="giftBoard"></div>
             <button class="mini-button interactive" id="giftReset" type="button">Shuffle</button>
             <p class="status-message" id="giftStatus">Diode is currently off-grid.</p>
@@ -114,29 +119,30 @@
               <span>03</span>
               <p>Brainrot Sequence</p>
             </div>
-            <h3>Memorize the flashing pattern and repeat it.</h3>
+            <h3>Memorize the flashing color pattern and repeat it.</h3>
             <div class="memory-grid" id="memoryBoard">
-              <button class="memory-pad interactive" data-pad="0" type="button">TUNG</button>
-              <button class="memory-pad interactive" data-pad="1" type="button">NYAN</button>
-              <button class="memory-pad interactive" data-pad="2" type="button">CAKE</button>
-              <button class="memory-pad interactive" data-pad="3" type="button">DIODE</button>
+              <button class="memory-pad interactive" data-pad="0" type="button" aria-label="green pad"></button>
+              <button class="memory-pad interactive" data-pad="1" type="button" aria-label="cyan pad"></button>
+              <button class="memory-pad interactive" data-pad="2" type="button" aria-label="coral pad"></button>
+              <button class="memory-pad interactive" data-pad="3" type="button" aria-label="yellow pad"></button>
             </div>
             <button class="mini-button interactive" id="memoryStart" type="button">Show Pattern</button>
             <p class="status-message" id="memoryStatus">Pattern length: 6. No pressure.</p>
           </article>
 
-          <article class="game-card reveal" data-game-card="nyan">
+          <article class="game-card reveal" data-game-card="wordle">
             <div class="game-topline">
               <span>04</span>
-              <p>Nyan Intercept</p>
+              <p>Level 21 Wordle</p>
             </div>
-            <h3>Catch 10 flying nyan cats before they leave.</h3>
-            <div class="nyan-arena" id="nyanArena"></div>
-            <div class="status-line">
-              <span id="nyanStatus">0 / 10 intercepted</span>
-              <span id="nyanTimer">15.0s</span>
+            <h3>Guess the five-letter 21st birthday word.</h3>
+            <p class="helper">Green means correct. Yellow means right letter, wrong spot.</p>
+            <div class="wordle-grid" id="wordleGrid" aria-label="Wordle board"></div>
+            <div class="wordle-controls">
+              <input id="wordleInput" type="text" maxlength="5" autocomplete="off" aria-label="Wordle guess" />
+              <button class="mini-button interactive" id="wordleSubmit" type="button">Guess</button>
             </div>
-            <button class="mini-button interactive" id="nyanStart" type="button">Launch Cats</button>
+            <p class="status-message" id="wordleStatus">Six tries. The answer is birthday-adjacent.</p>
           </article>
 
           <article class="game-card reveal" data-game-card="cake">
@@ -213,25 +219,6 @@
         </div>
       </section>
 
-      <section class="awards reveal">
-        <div class="section-head">
-          <p class="tag">bonus ceremony</p>
-          <h2>Choose one official ruling</h2>
-        </div>
-        <div class="award-row">
-          <button class="award-pill interactive" data-award="Most likely to make the group chat need a moderator">
-            Group chat hazard
-          </button>
-          <button class="award-pill interactive" data-award="Best dressed during completely unserious circumstances">
-            Fashion emergency
-          </button>
-          <button class="award-pill interactive" data-award="Diode-approved main character behavior">
-            Diode approved
-          </button>
-        </div>
-        <p class="status-message" id="awardStatus">The committee is waiting.</p>
-      </section>
-
       <section class="finale reveal">
         <div class="section-head">
           <p class="tag">endgame</p>
@@ -249,7 +236,7 @@
     <div class="cake-overlay" id="cakeOverlay" aria-hidden="true">
       <div class="cake-overlay-inner">
         <p class="overlay-kicker">cake reactor online</p>
-        <h2>ANYA WINS</h2>
+        <h2>LEVEL 21 CLEARED</h2>
         <div class="mega-cake" aria-hidden="true">
           <div class="mega-candle"></div>
           <div class="mega-layer top"></div>

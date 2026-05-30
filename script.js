@@ -17,16 +17,14 @@ const giftStatus = document.getElementById("giftStatus");
 const memoryPads = document.querySelectorAll(".memory-pad");
 const memoryStart = document.getElementById("memoryStart");
 const memoryStatus = document.getElementById("memoryStatus");
-const nyanArena = document.getElementById("nyanArena");
-const nyanStart = document.getElementById("nyanStart");
-const nyanStatus = document.getElementById("nyanStatus");
-const nyanTimer = document.getElementById("nyanTimer");
+const wordleGrid = document.getElementById("wordleGrid");
+const wordleInput = document.getElementById("wordleInput");
+const wordleSubmit = document.getElementById("wordleSubmit");
+const wordleStatus = document.getElementById("wordleStatus");
 const cakeTop = document.getElementById("cakeTop");
 const cakeMiddle = document.getElementById("cakeMiddle");
 const cakeBottom = document.getElementById("cakeBottom");
 const cakeStatus = document.getElementById("cakeStatus");
-const awardPills = document.querySelectorAll(".award-pill");
-const awardStatus = document.getElementById("awardStatus");
 const finaleButton = document.getElementById("finaleButton");
 const finaleText = document.getElementById("finaleText");
 const cakeOverlay = document.getElementById("cakeOverlay");
@@ -57,6 +55,18 @@ const exactSounds = {
   finale: soundPool[9].url
 };
 
+const imagePool = {
+  nyan: [
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/NyanCat.gif",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Nyan_cat_250px_frame.PNG"
+  ],
+  brainrot: [
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Full_image_of_Tung_Tung_Tung_Sahur.png",
+    "https://static.wikia.nocookie.net/brainrotnew/images/3/3f/Tralalero_tralala.png",
+    "https://static.wikia.nocookie.net/brainrotnew/images/f/f2/Bombardino_Crocodilo.png"
+  ]
+};
+
 const birthdayMelody = [
   [392, 0.2], [392, 0.2], [440, 0.38], [392, 0.38], [523, 0.38], [494, 0.62],
   [392, 0.2], [392, 0.2], [440, 0.38], [392, 0.38], [587, 0.38], [523, 0.62]
@@ -84,11 +94,10 @@ let giftLocked = false;
 let memorySequence = [];
 let memoryInputIndex = 0;
 let memoryAcceptingInput = false;
-let nyanTimerId;
-let nyanSpawnId;
-let nyanCaught = 0;
-let nyanTimeLeft = 15;
+let wordleRow = 0;
+let wordleSolved = false;
 let cakeTouched = false;
+const wordleAnswer = "LEGAL";
 
 function ensureAudio() {
   if (!audioContext) {
@@ -173,7 +182,18 @@ function spawnFloater(forceCat = false) {
   const isCat = forceCat || Math.random() > 0.55;
   const words = ["TUNG", "SAHUR", "41", "CAKE", "DIODE", "NYAN", "BRAINROT", "RUN"];
   floater.className = `chaos-floater${isCat ? " cat" : ""}`;
-  floater.textContent = isCat ? "NYAN CAT >>>" : words[Math.floor(Math.random() * words.length)];
+  if (isCat || Math.random() > 0.45) {
+    const img = document.createElement("img");
+    const pool = isCat ? imagePool.nyan : imagePool.brainrot;
+    img.src = pool[Math.floor(Math.random() * pool.length)];
+    img.alt = "";
+    img.addEventListener("error", () => {
+      floater.textContent = isCat ? "NYAN CAT >>>" : words[Math.floor(Math.random() * words.length)];
+    }, { once: true });
+    floater.appendChild(img);
+  } else {
+    floater.textContent = words[Math.floor(Math.random() * words.length)];
+  }
   floater.style.setProperty("--top", `${8 + Math.random() * 82}vh`);
   floater.style.setProperty("--speed", `${8 + Math.random() * 8}s`);
   floater.style.setProperty("--tilt", `${-10 + Math.random() * 20}deg`);
@@ -281,18 +301,94 @@ function buildGiftBoard() {
       gift.classList.add("open");
 
       if (index === giftWinner) {
-        gift.textContent = "DIODE";
+        gift.innerHTML = '<img src="./assets/photos/diode/diode-find.jpg" alt="Diode">';
+        gift.querySelector("img")?.addEventListener("error", () => {
+          gift.textContent = "add diode-find.jpg";
+        }, { once: true });
         giftLocked = true;
         giftStatus.textContent = "Diode located. Relic obtained.";
         markGameCleared("diode");
       } else {
-        gift.textContent = "sock";
+        const img = document.createElement("img");
+        img.src = imagePool.brainrot[Math.floor(Math.random() * imagePool.brainrot.length)];
+        img.alt = "brainrot decoy";
+        img.addEventListener("error", () => {
+          gift.textContent = "decoy";
+        }, { once: true });
+        gift.textContent = "";
+        gift.appendChild(img);
         giftStatus.textContent = "Incorrect. The gift pile becomes more suspicious.";
         playRandomSound();
       }
     });
 
     giftBoard.appendChild(gift);
+  }
+}
+
+function buildWordleBoard() {
+  wordleGrid.innerHTML = "";
+  wordleRow = 0;
+  wordleSolved = false;
+  wordleStatus.textContent = "Six tries. The answer is birthday-adjacent.";
+  wordleInput.value = "";
+  wordleInput.disabled = false;
+  wordleSubmit.disabled = false;
+
+  for (let index = 0; index < 30; index += 1) {
+    const cell = document.createElement("div");
+    cell.className = "wordle-cell";
+    wordleGrid.appendChild(cell);
+  }
+}
+
+function submitWordleGuess() {
+  if (wordleSolved || wordleRow >= 6) {
+    return;
+  }
+
+  const guess = wordleInput.value.toUpperCase().replace(/[^A-Z]/g, "");
+  if (guess.length !== 5) {
+    wordleStatus.textContent = "Five letters. The reactor is picky.";
+    playRandomSound();
+    return;
+  }
+
+  const answerLetters = wordleAnswer.split("");
+  const start = wordleRow * 5;
+
+  guess.split("").forEach((letter, index) => {
+    const cell = wordleGrid.children[start + index];
+    cell.textContent = letter;
+    if (letter === answerLetters[index]) {
+      cell.classList.add("correct");
+    } else if (answerLetters.includes(letter)) {
+      cell.classList.add("present");
+    } else {
+      cell.classList.add("absent");
+    }
+  });
+
+  wordleInput.value = "";
+  playRandomSound();
+
+  if (guess === wordleAnswer) {
+    wordleSolved = true;
+    wordleInput.disabled = true;
+    wordleSubmit.disabled = true;
+    wordleStatus.textContent = "Level 21 word solved. Relic obtained.";
+    markGameCleared("wordle");
+    return;
+  }
+
+  wordleRow += 1;
+  if (wordleRow >= 6) {
+    wordleStatus.textContent = "Wordle failed. The answer was LEGAL. Try again.";
+    wordleInput.disabled = true;
+    wordleSubmit.disabled = true;
+    window.setTimeout(buildWordleBoard, 1200);
+  } else {
+    wordleStatus.textContent = `${6 - wordleRow} tries left.`;
   }
 }
 
@@ -344,55 +440,6 @@ function handleMemoryInput(padIndex) {
   }
 }
 
-function launchNyanGame() {
-  window.clearInterval(nyanTimerId);
-  window.clearInterval(nyanSpawnId);
-  nyanArena.innerHTML = "";
-  nyanCaught = 0;
-  nyanTimeLeft = 15;
-  nyanStatus.textContent = "0 / 10 intercepted";
-  nyanTimer.textContent = "15.0s";
-
-  nyanSpawnId = window.setInterval(spawnNyanTarget, 650);
-  nyanTimerId = window.setInterval(() => {
-    nyanTimeLeft -= 0.1;
-    nyanTimer.textContent = `${Math.max(nyanTimeLeft, 0).toFixed(1)}s`;
-
-    if (nyanTimeLeft <= 0) {
-      window.clearInterval(nyanTimerId);
-      window.clearInterval(nyanSpawnId);
-      nyanStatus.textContent = "Nyan airspace escaped containment.";
-      playRandomSound();
-    }
-  }, 100);
-}
-
-function spawnNyanTarget() {
-  const target = document.createElement("button");
-  target.type = "button";
-  target.className = "nyan-target interactive";
-  target.textContent = "NYAN";
-  target.style.setProperty("--top", `${Math.random() * 78}%`);
-  target.style.setProperty("--speed", `${2.6 + Math.random() * 1.8}s`);
-
-  target.addEventListener("click", () => {
-    target.remove();
-    nyanCaught += 1;
-    nyanStatus.textContent = `${nyanCaught} / 10 intercepted`;
-    playRandomSound();
-
-    if (nyanCaught >= 10) {
-      window.clearInterval(nyanTimerId);
-      window.clearInterval(nyanSpawnId);
-      nyanStatus.textContent = "Nyan intercept cleared. Relic obtained.";
-      markGameCleared("nyan");
-    }
-  });
-
-  nyanArena.appendChild(target);
-  window.setTimeout(() => target.remove(), 5200);
-}
-
 function paintCake() {
   cakeTop.style.background = cakeThemes.top[cakeState.top];
   cakeMiddle.style.background = cakeThemes.middle[cakeState.middle];
@@ -422,7 +469,7 @@ function cycleCakePart(part) {
 function openCakeOverlay() {
   cakeOverlay.classList.add("visible");
   cakeOverlay.setAttribute("aria-hidden", "false");
-  overlayText.textContent = "The cake has left normal reality. Headphones were the correct choice.";
+  overlayText.textContent = "Anya has cleared Level 21. The cake has left normal reality.";
   document.body.classList.add("party-surge");
 
   for (let index = 0; index < 8; index += 1) {
@@ -507,16 +554,6 @@ memoryPads.forEach((pad) => {
   pad.addEventListener("click", () => handleMemoryInput(Number(pad.dataset.pad)));
 });
 
-awardPills.forEach((pill) => {
-  pill.addEventListener("click", () => {
-    awardPills.forEach((item) => item.classList.remove("active"));
-    pill.classList.add("active");
-    awardStatus.textContent = `${pill.dataset.award}. The ruling is final.`;
-    playRandomSound();
-    spawnFloater();
-  });
-});
-
 startButton.addEventListener("click", () => {
   burstConfetti(120);
   playRandomSound();
@@ -531,7 +568,12 @@ secret67.addEventListener("click", () => {
 candleReset.addEventListener("click", createCandles);
 giftReset.addEventListener("click", buildGiftBoard);
 memoryStart.addEventListener("click", showMemorySequence);
-nyanStart.addEventListener("click", launchNyanGame);
+wordleSubmit.addEventListener("click", submitWordleGuess);
+wordleInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    submitWordleGuess();
+  }
+});
 finaleButton.addEventListener("click", finaleDrop);
 overlayEncore.addEventListener("click", openCakeOverlay);
 overlayClose.addEventListener("click", closeCakeOverlay);
@@ -545,6 +587,7 @@ document.querySelectorAll(".photo-tile").forEach((tile) => {
 
 createCandles();
 buildGiftBoard();
+buildWordleBoard();
 paintCake();
 updateWins();
 preparePhotoSlots();

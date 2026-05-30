@@ -92,6 +92,13 @@ code {
   animation: roam var(--speed) linear forwards;
 }
 
+.chaos-floater img {
+  display: block;
+  width: 96px;
+  height: 72px;
+  object-fit: contain;
+}
+
 .chaos-floater.cat {
   min-width: 136px;
   background: linear-gradient(90deg, #ff4d6d, #ffe66d, #b6ff00, #00e5ff);
@@ -500,13 +507,23 @@ main {
   aspect-ratio: 1;
   display: grid;
   place-items: center;
+  overflow: hidden;
   border: 1px solid var(--line);
   background: rgba(255, 230, 109, 0.18);
-  font-size: 1.55rem;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .gift.open {
   background: rgba(255, 255, 255, 0.08);
+}
+
+.gift img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .memory-grid {
@@ -544,31 +561,52 @@ main {
   transform: scale(0.96);
 }
 
-.nyan-arena {
-  position: relative;
-  height: 230px;
+.wordle-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.45rem;
   margin: 1rem 0;
-  border: 1px solid var(--line);
-  overflow: hidden;
-  background:
-    linear-gradient(90deg, rgba(182, 255, 0, 0.08) 1px, transparent 1px),
-    linear-gradient(rgba(0, 229, 255, 0.08) 1px, transparent 1px),
-    rgba(255, 255, 255, 0.04);
-  background-size: 20px 20px;
 }
 
-.nyan-target {
-  position: absolute;
-  left: -90px;
-  top: var(--top);
-  min-width: 82px;
-  min-height: 34px;
-  border: 1px solid #000;
+.wordle-cell {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.06);
+  font-family: "Archivo Black", sans-serif;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+}
+
+.wordle-cell.correct {
   color: #061009;
-  background: linear-gradient(90deg, #ff4d6d, #ffe66d, #b6ff00, #00e5ff);
+  background: var(--acid);
+}
+
+.wordle-cell.present {
+  color: #061009;
+  background: var(--yellow);
+}
+
+.wordle-cell.absent {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.wordle-controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.65rem;
+}
+
+.wordle-controls input {
+  min-width: 0;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--line);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  text-transform: uppercase;
   font-weight: 800;
-  box-shadow: 3px 3px 0 #000;
-  animation: nyanFly var(--speed) linear forwards;
 }
 
 .cake-stage {
@@ -697,15 +735,6 @@ main {
 .photo-tile figcaption {
   margin-top: 0.45rem;
   color: var(--muted);
-}
-
-.award-row {
-  margin-top: 1rem;
-}
-
-.award-pill.active {
-  color: #061009;
-  background: var(--acid);
 }
 
 .finale-panel {
@@ -849,11 +878,6 @@ main {
 @keyframes roam {
   from { transform: translateX(-20vw) rotate(var(--tilt)); }
   to { transform: translateX(135vw) rotate(calc(var(--tilt) * -1)); }
-}
-
-@keyframes nyanFly {
-  from { transform: translateX(-90px); }
-  to { transform: translateX(calc(100vw + 140px)); }
 }
 
 @keyframes bounceCake {
